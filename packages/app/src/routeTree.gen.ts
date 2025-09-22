@@ -9,21 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TeamManagementRouteImport } from './routes/team-management'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityPostureRouteImport } from './routes/security-posture'
 import { Route as ObservabilityRouteImport } from './routes/observability'
 import { Route as InfrastructureRouteImport } from './routes/infrastructure'
-import { Route as DeploymentsRouteImport } from './routes/deployments'
 import { Route as ComponentsRouteImport } from './routes/components'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ComponentsIndexRouteImport } from './routes/components.index'
 import { Route as ObservabilityLogsRouteImport } from './routes/observability.logs'
+import { Route as ComponentsCreateRouteImport } from './routes/components.create'
 
-const TeamManagementRoute = TeamManagementRouteImport.update({
-  id: '/team-management',
-  path: '/team-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -44,11 +39,6 @@ const InfrastructureRoute = InfrastructureRouteImport.update({
   path: '/infrastructure',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DeploymentsRoute = DeploymentsRouteImport.update({
-  id: '/deployments',
-  path: '/deployments',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ComponentsRoute = ComponentsRouteImport.update({
   id: '/components',
   path: '/components',
@@ -59,102 +49,101 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComponentsIndexRoute = ComponentsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ComponentsRoute,
+} as any)
 const ObservabilityLogsRoute = ObservabilityLogsRouteImport.update({
   id: '/logs',
   path: '/logs',
   getParentRoute: () => ObservabilityRoute,
 } as any)
+const ComponentsCreateRoute = ComponentsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => ComponentsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/components': typeof ComponentsRoute
-  '/deployments': typeof DeploymentsRoute
+  '/components': typeof ComponentsRouteWithChildren
   '/infrastructure': typeof InfrastructureRoute
   '/observability': typeof ObservabilityRouteWithChildren
   '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
-  '/team-management': typeof TeamManagementRoute
+  '/components/create': typeof ComponentsCreateRoute
   '/observability/logs': typeof ObservabilityLogsRoute
+  '/components/': typeof ComponentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/components': typeof ComponentsRoute
-  '/deployments': typeof DeploymentsRoute
   '/infrastructure': typeof InfrastructureRoute
   '/observability': typeof ObservabilityRouteWithChildren
   '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
-  '/team-management': typeof TeamManagementRoute
+  '/components/create': typeof ComponentsCreateRoute
   '/observability/logs': typeof ObservabilityLogsRoute
+  '/components': typeof ComponentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/components': typeof ComponentsRoute
-  '/deployments': typeof DeploymentsRoute
+  '/components': typeof ComponentsRouteWithChildren
   '/infrastructure': typeof InfrastructureRoute
   '/observability': typeof ObservabilityRouteWithChildren
   '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
-  '/team-management': typeof TeamManagementRoute
+  '/components/create': typeof ComponentsCreateRoute
   '/observability/logs': typeof ObservabilityLogsRoute
+  '/components/': typeof ComponentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/components'
-    | '/deployments'
     | '/infrastructure'
     | '/observability'
     | '/security-posture'
     | '/settings'
-    | '/team-management'
+    | '/components/create'
     | '/observability/logs'
+    | '/components/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/components'
-    | '/deployments'
     | '/infrastructure'
     | '/observability'
     | '/security-posture'
     | '/settings'
-    | '/team-management'
+    | '/components/create'
     | '/observability/logs'
+    | '/components'
   id:
     | '__root__'
     | '/'
     | '/components'
-    | '/deployments'
     | '/infrastructure'
     | '/observability'
     | '/security-posture'
     | '/settings'
-    | '/team-management'
+    | '/components/create'
     | '/observability/logs'
+    | '/components/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ComponentsRoute: typeof ComponentsRoute
-  DeploymentsRoute: typeof DeploymentsRoute
+  ComponentsRoute: typeof ComponentsRouteWithChildren
   InfrastructureRoute: typeof InfrastructureRoute
   ObservabilityRoute: typeof ObservabilityRouteWithChildren
   SecurityPostureRoute: typeof SecurityPostureRoute
   SettingsRoute: typeof SettingsRoute
-  TeamManagementRoute: typeof TeamManagementRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/team-management': {
-      id: '/team-management'
-      path: '/team-management'
-      fullPath: '/team-management'
-      preLoaderRoute: typeof TeamManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -183,13 +172,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InfrastructureRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/deployments': {
-      id: '/deployments'
-      path: '/deployments'
-      fullPath: '/deployments'
-      preLoaderRoute: typeof DeploymentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/components': {
       id: '/components'
       path: '/components'
@@ -204,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/components/': {
+      id: '/components/'
+      path: '/'
+      fullPath: '/components/'
+      preLoaderRoute: typeof ComponentsIndexRouteImport
+      parentRoute: typeof ComponentsRoute
+    }
     '/observability/logs': {
       id: '/observability/logs'
       path: '/logs'
@@ -211,8 +200,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ObservabilityLogsRouteImport
       parentRoute: typeof ObservabilityRoute
     }
+    '/components/create': {
+      id: '/components/create'
+      path: '/create'
+      fullPath: '/components/create'
+      preLoaderRoute: typeof ComponentsCreateRouteImport
+      parentRoute: typeof ComponentsRoute
+    }
   }
 }
+
+interface ComponentsRouteChildren {
+  ComponentsCreateRoute: typeof ComponentsCreateRoute
+  ComponentsIndexRoute: typeof ComponentsIndexRoute
+}
+
+const ComponentsRouteChildren: ComponentsRouteChildren = {
+  ComponentsCreateRoute: ComponentsCreateRoute,
+  ComponentsIndexRoute: ComponentsIndexRoute,
+}
+
+const ComponentsRouteWithChildren = ComponentsRoute._addFileChildren(
+  ComponentsRouteChildren,
+)
 
 interface ObservabilityRouteChildren {
   ObservabilityLogsRoute: typeof ObservabilityLogsRoute
@@ -228,13 +238,11 @@ const ObservabilityRouteWithChildren = ObservabilityRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ComponentsRoute: ComponentsRoute,
-  DeploymentsRoute: DeploymentsRoute,
+  ComponentsRoute: ComponentsRouteWithChildren,
   InfrastructureRoute: InfrastructureRoute,
   ObservabilityRoute: ObservabilityRouteWithChildren,
   SecurityPostureRoute: SecurityPostureRoute,
   SettingsRoute: SettingsRoute,
-  TeamManagementRoute: TeamManagementRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

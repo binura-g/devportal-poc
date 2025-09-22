@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 
 // Routes that should hide certain selectors
 const routeConfig: Record<string, { showComponent?: boolean; showEnvironment?: boolean }> = {
-  '/': { showComponent: false, showEnvironment: true },
+  '/': { showComponent: false, showEnvironment: false },
   '/components': { showComponent: false, showEnvironment: false },
   '/deployments': { showComponent: true, showEnvironment: true },
   '/monitoring': { showComponent: true, showEnvironment: true },
@@ -28,14 +28,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const config = routeConfig[location.pathname] || { showComponent: true, showEnvironment: true }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen overflow-hidden flex flex-col bg-background">
       <TopNav 
         showComponentSelector={config.showComponent}
         showEnvironmentSelector={config.showEnvironment}
       />
-      <div className="flex">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto">
           {children}
         </main>
       </div>

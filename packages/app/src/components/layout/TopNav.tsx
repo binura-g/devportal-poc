@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useGlobalStore, type Perspective } from '@/stores/global.store'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from "react";
+import { useGlobalStore, type Perspective } from "@/stores/global.store";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
+} from "@/components/ui/popover";
 import {
   Command,
   CommandDialog,
@@ -15,11 +15,11 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command'
-import { 
-  Check, 
-  ChevronDown, 
-  Code2, 
+} from "@/components/ui/command";
+import {
+  Check,
+  ChevronDown,
+  Code2,
   Wrench,
   FolderOpen,
   Package,
@@ -29,23 +29,23 @@ import {
   LogOut,
   Search,
   FileText,
-  GitBranch,
   Activity,
   Shield,
-  LayoutDashboard
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { useNavigate } from '@tanstack/react-router'
+  LayoutDashboard,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useNavigate } from "@tanstack/react-router";
+import { useUrlQuerySync } from "@/hooks/useUrlQuerySync";
 
 interface SearchableDropdownProps {
-  value: string | null
-  onSelect: (value: string) => void
-  items: Array<{ id: string; name: string; description?: string }>
-  placeholder: string
-  searchPlaceholder: string
-  emptyText: string
-  icon?: React.ReactNode
-  className?: string
+  value: string | null;
+  onSelect: (value: string) => void;
+  items: Array<{ id: string; name: string; description?: string }>;
+  placeholder: string;
+  searchPlaceholder: string;
+  emptyText: string;
+  icon?: React.ReactNode;
+  className?: string;
 }
 
 function SearchableDropdown({
@@ -56,10 +56,10 @@ function SearchableDropdown({
   searchPlaceholder,
   emptyText,
   icon,
-  className
+  className,
 }: SearchableDropdownProps) {
-  const [open, setOpen] = useState(false)
-  const selectedItem = items.find(item => item.id === value)
+  const [open, setOpen] = useState(false);
+  const selectedItem = items.find((item) => item.id === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -72,7 +72,9 @@ function SearchableDropdown({
         >
           <span className="flex items-center gap-2 truncate">
             {icon}
-            <span className="truncate">{selectedItem ? selectedItem.name : placeholder}</span>
+            <span className="truncate">
+              {selectedItem ? selectedItem.name : placeholder}
+            </span>
           </span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -88,8 +90,8 @@ function SearchableDropdown({
                   key={item.id}
                   value={item.name}
                   onSelect={() => {
-                    onSelect(item.id)
-                    setOpen(false)
+                    onSelect(item.id);
+                    setOpen(false);
                   }}
                 >
                   <Check
@@ -113,57 +115,61 @@ function SearchableDropdown({
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 interface PerspectiveSwitcherProps {
-  perspective: Perspective
-  onPerspectiveChange: (perspective: Perspective) => void
+  perspective: Perspective;
+  onPerspectiveChange: (perspective: Perspective) => void;
 }
 
-function PerspectiveSwitcher({ perspective, onPerspectiveChange }: PerspectiveSwitcherProps) {
+function PerspectiveSwitcher({
+  perspective,
+  onPerspectiveChange,
+}: PerspectiveSwitcherProps) {
   return (
-    <div className="flex items-center bg-muted rounded-lg p-1">
+    <div className="flex items-center bg-muted/90 rounded-lg p-1">
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => onPerspectiveChange('platform-engineering')}
+        onClick={() => onPerspectiveChange("platform-engineering")}
         className={cn(
-          "gap-2 transition-all",
-          perspective === 'platform-engineering' 
-            ? 'bg-background text-foreground shadow-sm' 
-            : 'text-muted-foreground hover:text-foreground hover:bg-transparent'
+          "gap-2 hover:bg-white hover:shadow-sm",
+          perspective === "platform-engineering"
+            ? "bg-background text-foreground"
+            : "text-muted-foreground"
         )}
       >
         <Wrench className="h-4 w-4" />
         Platform Engineering
       </Button>
       <Button
+      
         variant="ghost"
         size="sm"
-        onClick={() => onPerspectiveChange('development')}
+        onClick={() => onPerspectiveChange("development")}
         className={cn(
-          "gap-2 transition-all",
-          perspective === 'development' 
-            ? 'bg-background text-foreground shadow-sm' 
-            : 'text-muted-foreground hover:text-foreground hover:bg-transparent'
+          "gap-2 hover:bg-white hover:shadow-sm",
+          perspective === "development"
+            ? "bg-background text-foreground"
+            : "text-muted-foreground"
         )}
       >
         <Code2 className="h-4 w-4" />
         Development
       </Button>
     </div>
-  )
+  );
 }
 
 interface TopNavProps {
-  showComponentSelector?: boolean
-  showEnvironmentSelector?: boolean
+  showComponentSelector?: boolean;
+  showEnvironmentSelector?: boolean;
 }
 
-export function TopNav({ 
-  showComponentSelector = true, 
-  showEnvironmentSelector = true 
+export function TopNav({
+  showComponentSelector = true,
+  showEnvironmentSelector = true,
 }: TopNavProps) {
   const {
     perspective,
@@ -177,39 +183,42 @@ export function TopNav({
     setCurrentComponent,
     setCurrentEnvironment,
     getComponentsForProject,
-  } = useGlobalStore()
+  } = useGlobalStore();
 
-  const navigate = useNavigate()
-  const [searchOpen, setSearchOpen] = useState(false)
+  const navigate = useNavigate();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // Sync URL query parameters
+  useUrlQuerySync();
 
   // Get filtered components based on selected project
-  const availableComponents = currentProject 
+  const availableComponents = currentProject
     ? getComponentsForProject(currentProject.id)
-    : []
+    : [];
 
   // Reset component when project changes
   useEffect(() => {
     if (currentProject && currentComponent) {
       const componentBelongsToProject = availableComponents.some(
-        c => c.id === currentComponent.id
-      )
+        (c) => c.id === currentComponent.id
+      );
       if (!componentBelongsToProject) {
-        setCurrentComponent(null)
+        setCurrentComponent(null);
       }
     }
-  }, [currentProject, currentComponent, availableComponents])
+  }, [currentProject, currentComponent, availableComponents]);
 
   // Keyboard shortcut for search (Cmd+K or Ctrl+K)
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setSearchOpen((open) => !open)
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen((open) => !open);
       }
-    }
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [])
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <>
@@ -226,8 +235,8 @@ export function TopNav({
             <SearchableDropdown
               value={currentProject?.id || null}
               onSelect={(projectId) => {
-                const project = projects.find(p => p.id === projectId)
-                setCurrentProject(project || null)
+                const project = projects.find((p) => p.id === projectId);
+                setCurrentProject(project || null);
               }}
               items={projects}
               placeholder="Select project"
@@ -241,15 +250,17 @@ export function TopNav({
               <SearchableDropdown
                 value={currentComponent?.id || null}
                 onSelect={(componentId) => {
-                  const component = availableComponents.find(c => c.id === componentId)
-                  setCurrentComponent(component || null)
+                  const component = availableComponents.find(
+                    (c) => c.id === componentId
+                  );
+                  setCurrentComponent(component || null);
                 }}
                 items={availableComponents}
                 placeholder="Select component"
                 searchPlaceholder="Search components..."
                 emptyText="No components found"
                 icon={<Package className="h-4 w-4" />}
-                className={availableComponents.length === 0 ? 'opacity-50' : ''}
+                className={availableComponents.length === 0 ? "opacity-50" : ""}
               />
             )}
 
@@ -258,8 +269,8 @@ export function TopNav({
               <SearchableDropdown
                 value={currentEnvironment?.id || null}
                 onSelect={(envId) => {
-                  const environment = environments.find(e => e.id === envId)
-                  setCurrentEnvironment(environment || null)
+                  const environment = environments.find((e) => e.id === envId);
+                  setCurrentEnvironment(environment || null);
                 }}
                 items={environments}
                 placeholder="Select environment"
@@ -286,7 +297,7 @@ export function TopNav({
             </Button>
 
             {/* Perspective Switcher */}
-            <PerspectiveSwitcher 
+            <PerspectiveSwitcher
               perspective={perspective}
               onPerspectiveChange={setPerspective}
             />
@@ -300,7 +311,9 @@ export function TopNav({
               </PopoverTrigger>
               <PopoverContent className="w-56" align="end">
                 <div className="flex flex-col gap-1">
-                  <div className="px-2 py-1.5 text-sm font-semibold">John Doe</div>
+                  <div className="px-2 py-1.5 text-sm font-semibold">
+                    John Doe
+                  </div>
                   <div className="px-2 pb-2 text-xs text-muted-foreground">
                     john.doe@example.com
                   </div>
@@ -325,29 +338,50 @@ export function TopNav({
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          
+
           <CommandGroup heading="Navigation">
-            <CommandItem onSelect={() => { navigate({ to: '/' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/" });
+                setSearchOpen(false);
+              }}
+            >
               <LayoutDashboard className="mr-2 h-4 w-4" />
               <span>Dashboard</span>
             </CommandItem>
-            <CommandItem onSelect={() => { navigate({ to: '/components' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/components" });
+                setSearchOpen(false);
+              }}
+            >
               <Package className="mr-2 h-4 w-4" />
               <span>Components</span>
             </CommandItem>
-            <CommandItem onSelect={() => { navigate({ to: '/deployments' }); setSearchOpen(false) }}>
-              <GitBranch className="mr-2 h-4 w-4" />
-              <span>Deployments</span>
-            </CommandItem>
-            <CommandItem onSelect={() => { navigate({ to: '/observability/logs' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/observability/logs" });
+                setSearchOpen(false);
+              }}
+            >
               <FileText className="mr-2 h-4 w-4" />
               <span>Logs</span>
             </CommandItem>
-            <CommandItem onSelect={() => { navigate({ to: '/observability' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/observability" });
+                setSearchOpen(false);
+              }}
+            >
               <Activity className="mr-2 h-4 w-4" />
               <span>Monitoring</span>
             </CommandItem>
-            <CommandItem onSelect={() => { navigate({ to: '/security-posture' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/security-posture" });
+                setSearchOpen(false);
+              }}
+            >
               <Shield className="mr-2 h-4 w-4" />
               <span>Security</span>
             </CommandItem>
@@ -360,8 +394,8 @@ export function TopNav({
               <CommandItem
                 key={project.id}
                 onSelect={() => {
-                  setCurrentProject(project)
-                  setSearchOpen(false)
+                  setCurrentProject(project);
+                  setSearchOpen(false);
                 }}
               >
                 <FolderOpen className="mr-2 h-4 w-4" />
@@ -378,9 +412,9 @@ export function TopNav({
                   <CommandItem
                     key={component.id}
                     onSelect={() => {
-                      setCurrentComponent(component)
-                      navigate({ to: '/components' })
-                      setSearchOpen(false)
+                      setCurrentComponent(component);
+                      navigate({ to: "/components" });
+                      setSearchOpen(false);
                     }}
                   >
                     <Package className="mr-2 h-4 w-4" />
@@ -394,7 +428,12 @@ export function TopNav({
           <CommandSeparator />
 
           <CommandGroup heading="Actions">
-            <CommandItem onSelect={() => { navigate({ to: '/settings' }); setSearchOpen(false) }}>
+            <CommandItem
+              onSelect={() => {
+                navigate({ to: "/settings" });
+                setSearchOpen(false);
+              }}
+            >
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </CommandItem>
@@ -402,5 +441,5 @@ export function TopNav({
         </CommandList>
       </CommandDialog>
     </>
-  )
+  );
 }

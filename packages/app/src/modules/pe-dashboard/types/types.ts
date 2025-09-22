@@ -41,7 +41,8 @@ export interface ModuleStatus {
   icon: string
   enabled: boolean
   description: string
-  category: 'ci-cd' | 'observability' | 'security' | 'api-management' | 'other'
+  category: 'devops' | 'observability' | 'security' | 'api-management' | 'infrastructure' | 'automation' | 'ai' | 'other'
+  docsUrl?: string
 }
 
 export interface PEMetrics {

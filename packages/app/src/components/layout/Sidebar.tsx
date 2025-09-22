@@ -8,7 +8,6 @@ import {
   Shield,
   Settings,
   Server,
-  Users,
   ChevronDown,
   Activity
 } from 'lucide-react'
@@ -61,24 +60,6 @@ const platformEngineeringNavItems: NavItem[] = [
     path: '/',
   },
   {
-    id: 'infrastructure',
-    label: 'Infrastructure',
-    icon: <Server className="h-4 w-4" />,
-    path: '/infrastructure',
-  },
-  {
-    id: 'security-posture',
-    label: 'Security Posture',
-    icon: <Shield className="h-4 w-4" />,
-    path: '/security-posture',
-  },
-  {
-    id: 'team-management',
-    label: 'Team Management',
-    icon: <Users className="h-4 w-4" />,
-    path: '/team-management',
-  },
-  {
     id: 'observability',
     label: 'Observability',
     icon: <Activity className="h-4 w-4" />,
@@ -91,6 +72,18 @@ const platformEngineeringNavItems: NavItem[] = [
         path: '/observability/logs',
       },
     ]
+  },
+  {
+    id: 'infrastructure',
+    label: 'Infrastructure',
+    icon: <Server className="h-4 w-4" />,
+    path: '/infrastructure',
+  },
+  {
+    id: 'security-posture',
+    label: 'Security Posture',
+    icon: <Shield className="h-4 w-4" />,
+    path: '/security-posture',
   },
 ]
 
@@ -174,8 +167,8 @@ export function Sidebar() {
     : platformEngineeringNavItems
 
   return (
-    <aside className="w-64 border-r bg-muted/40 min-h-screen">
-      <nav className="flex flex-col gap-1 p-4">
+    <aside className="w-64 border-r bg-muted/40 h-full overflow-y-auto">
+      <nav className="flex flex-col gap-1 p-4 h-full">
         <div className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           {perspective === 'development' ? 'Development' : 'Platform'}
         </div>

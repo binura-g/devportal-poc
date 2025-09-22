@@ -93,8 +93,8 @@ export function LogsPage() {
   const totalLogs = data?.pages?.[0]?.total
 
   return (
-    <div className="flex flex-col h-full max-h-screen overflow-hidden p-4">
-      <div className="flex flex-col h-[calc(100%-1rem)] bg-background rounded-lg border shadow-sm overflow-hidden">
+    <div className="flex flex-col h-full p-4">
+      <div className="flex flex-col h-full bg-background rounded-lg border shadow-sm overflow-hidden">
         {/* Fixed Header */}
         <div className="flex-shrink-0 border-b px-6 py-4">
           <h1 className="text-2xl font-bold">Logs</h1>

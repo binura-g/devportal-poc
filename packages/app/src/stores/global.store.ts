@@ -71,7 +71,7 @@ export const useGlobalStore = create<GlobalState>()(
       ],
       
       components: [
-        { id: 'comp-1', name: 'API Gateway', projectId: 'proj-1', type: 'backend' },
+        { id: 'comp-1', name: 'User Auth Service', projectId: 'proj-1', type: 'backend', description: 'Authentication and authorization service' },
         { id: 'comp-2', name: 'Product Service', projectId: 'proj-1', type: 'service' },
         { id: 'comp-3', name: 'Order Service', projectId: 'proj-1', type: 'service' },
         { id: 'comp-4', name: 'Web Frontend', projectId: 'proj-1', type: 'frontend' },

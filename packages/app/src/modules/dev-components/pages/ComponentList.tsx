@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { useNavigate } from '@tanstack/react-router'
 import {
   Package,
   Server,
@@ -17,8 +18,7 @@ import {
   Users,
   Clock,
   CheckCircle,
-  AlertCircle,
-  Layers
+  AlertCircle
 } from 'lucide-react'
 
 interface ComponentCardProps {
@@ -100,7 +100,7 @@ function ComponentCard({ component, onClick }: ComponentCardProps) {
         <div className="flex gap-2 mt-4">
           <Button variant="outline" size="sm" className="flex-1">
             <Activity className="h-4 w-4 mr-1" />
-            Metrics
+            Observe
           </Button>
           <Button variant="outline" size="sm" className="flex-1">
             <ExternalLink className="h-4 w-4 mr-1" />
@@ -112,10 +112,11 @@ function ComponentCard({ component, onClick }: ComponentCardProps) {
   )
 }
 
-export function Components() {
+export function ComponentList() {
   const { currentProject, getComponentsForProject } = useGlobalStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedType, setSelectedType] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const projectComponents = useMemo(() => {
     if (!currentProject) return []
@@ -148,6 +149,11 @@ export function Components() {
     console.log('Component clicked:', component)
   }
 
+  const handleCreateComponent = () => {
+    console.log('Navigating to create component page...')
+    navigate({ to: '/components/create' })
+  }
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -161,7 +167,7 @@ export function Components() {
           </p>
         </div>
         {currentProject && (
-          <Button>
+          <Button onClick={handleCreateComponent}>
             <Plus className="h-4 w-4 mr-2" />
             Add Component
           </Button>
@@ -202,51 +208,6 @@ export function Components() {
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid gap-4 md:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Components</CardTitle>
-                <Layers className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{projectComponents.length}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Services</CardTitle>
-                <Server className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {projectComponents.filter(c => c.type === 'service').length}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Frontend</CardTitle>
-                <Globe className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {projectComponents.filter(c => c.type === 'frontend').length}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Backend</CardTitle>
-                <Database className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {projectComponents.filter(c => c.type === 'backend').length}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
           {/* Components Grid */}
           {filteredComponents.length > 0 ? (
