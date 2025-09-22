@@ -9,14 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TeamManagementRouteImport } from './routes/team-management'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SecurityPostureRouteImport } from './routes/security-posture'
+import { Route as ObservabilityRouteImport } from './routes/observability'
+import { Route as InfrastructureRouteImport } from './routes/infrastructure'
 import { Route as DeploymentsRouteImport } from './routes/deployments'
 import { Route as ComponentsRouteImport } from './routes/components'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ObservabilityLogsRouteImport } from './routes/observability.logs'
 
+const TeamManagementRoute = TeamManagementRouteImport.update({
+  id: '/team-management',
+  path: '/team-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityPostureRoute = SecurityPostureRouteImport.update({
+  id: '/security-posture',
+  path: '/security-posture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObservabilityRoute = ObservabilityRouteImport.update({
+  id: '/observability',
+  path: '/observability',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfrastructureRoute = InfrastructureRouteImport.update({
+  id: '/infrastructure',
+  path: '/infrastructure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DeploymentsRoute = DeploymentsRouteImport.update({
@@ -34,48 +59,128 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ObservabilityLogsRoute = ObservabilityLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => ObservabilityRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/components': typeof ComponentsRoute
   '/deployments': typeof DeploymentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/observability': typeof ObservabilityRouteWithChildren
+  '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
+  '/team-management': typeof TeamManagementRoute
+  '/observability/logs': typeof ObservabilityLogsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/components': typeof ComponentsRoute
   '/deployments': typeof DeploymentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/observability': typeof ObservabilityRouteWithChildren
+  '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
+  '/team-management': typeof TeamManagementRoute
+  '/observability/logs': typeof ObservabilityLogsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/components': typeof ComponentsRoute
   '/deployments': typeof DeploymentsRoute
+  '/infrastructure': typeof InfrastructureRoute
+  '/observability': typeof ObservabilityRouteWithChildren
+  '/security-posture': typeof SecurityPostureRoute
   '/settings': typeof SettingsRoute
+  '/team-management': typeof TeamManagementRoute
+  '/observability/logs': typeof ObservabilityLogsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/components' | '/deployments' | '/settings'
+  fullPaths:
+    | '/'
+    | '/components'
+    | '/deployments'
+    | '/infrastructure'
+    | '/observability'
+    | '/security-posture'
+    | '/settings'
+    | '/team-management'
+    | '/observability/logs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/components' | '/deployments' | '/settings'
-  id: '__root__' | '/' | '/components' | '/deployments' | '/settings'
+  to:
+    | '/'
+    | '/components'
+    | '/deployments'
+    | '/infrastructure'
+    | '/observability'
+    | '/security-posture'
+    | '/settings'
+    | '/team-management'
+    | '/observability/logs'
+  id:
+    | '__root__'
+    | '/'
+    | '/components'
+    | '/deployments'
+    | '/infrastructure'
+    | '/observability'
+    | '/security-posture'
+    | '/settings'
+    | '/team-management'
+    | '/observability/logs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ComponentsRoute: typeof ComponentsRoute
   DeploymentsRoute: typeof DeploymentsRoute
+  InfrastructureRoute: typeof InfrastructureRoute
+  ObservabilityRoute: typeof ObservabilityRouteWithChildren
+  SecurityPostureRoute: typeof SecurityPostureRoute
   SettingsRoute: typeof SettingsRoute
+  TeamManagementRoute: typeof TeamManagementRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/team-management': {
+      id: '/team-management'
+      path: '/team-management'
+      fullPath: '/team-management'
+      preLoaderRoute: typeof TeamManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security-posture': {
+      id: '/security-posture'
+      path: '/security-posture'
+      fullPath: '/security-posture'
+      preLoaderRoute: typeof SecurityPostureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/observability': {
+      id: '/observability'
+      path: '/observability'
+      fullPath: '/observability'
+      preLoaderRoute: typeof ObservabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/infrastructure': {
+      id: '/infrastructure'
+      path: '/infrastructure'
+      fullPath: '/infrastructure'
+      preLoaderRoute: typeof InfrastructureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/deployments': {
@@ -99,14 +204,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/observability/logs': {
+      id: '/observability/logs'
+      path: '/logs'
+      fullPath: '/observability/logs'
+      preLoaderRoute: typeof ObservabilityLogsRouteImport
+      parentRoute: typeof ObservabilityRoute
+    }
   }
 }
+
+interface ObservabilityRouteChildren {
+  ObservabilityLogsRoute: typeof ObservabilityLogsRoute
+}
+
+const ObservabilityRouteChildren: ObservabilityRouteChildren = {
+  ObservabilityLogsRoute: ObservabilityLogsRoute,
+}
+
+const ObservabilityRouteWithChildren = ObservabilityRoute._addFileChildren(
+  ObservabilityRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ComponentsRoute: ComponentsRoute,
   DeploymentsRoute: DeploymentsRoute,
+  InfrastructureRoute: InfrastructureRoute,
+  ObservabilityRoute: ObservabilityRouteWithChildren,
+  SecurityPostureRoute: SecurityPostureRoute,
   SettingsRoute: SettingsRoute,
+  TeamManagementRoute: TeamManagementRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

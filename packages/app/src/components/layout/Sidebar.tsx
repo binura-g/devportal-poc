@@ -5,30 +5,18 @@ import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
   Package,
-  GitBranch,
-  Activity,
-  FileText,
   Shield,
-  Cloud,
   Settings,
-  Database,
   Server,
-  Key,
   Users,
-  BarChart3,
-  AlertCircle,
-  Layers,
-  Workflow,
-  Monitor,
-  HardDrive,
-  Network,
-  ChevronDown
+  ChevronDown,
+  Activity
 } from 'lucide-react'
 
 interface NavItem {
   id: string
   label: string
-  icon: React.ReactNode
+  icon: React.ReactNode | null
   path: string
   badge?: string | number
   children?: NavItem[]
@@ -49,34 +37,18 @@ const developmentNavItems: NavItem[] = [
     path: '/components',
   },
   {
-    id: 'deployments',
-    label: 'Deployments',
-    icon: <GitBranch className="h-4 w-4" />,
-    path: '/deployments',
-  },
-  {
-    id: 'monitoring',
-    label: 'Monitoring',
+    id: 'observability',
+    label: 'Observability',
     icon: <Activity className="h-4 w-4" />,
-    path: '/monitoring',
-  },
-  {
-    id: 'logs',
-    label: 'Logs',
-    icon: <FileText className="h-4 w-4" />,
-    path: '/logs',
-  },
-  {
-    id: 'security',
-    label: 'Security',
-    icon: <Shield className="h-4 w-4" />,
-    path: '/security',
-  },
-  {
-    id: 'api-docs',
-    label: 'API Documentation',
-    icon: <FileText className="h-4 w-4" />,
-    path: '/api-docs',
+    path: '/observability',
+    children: [
+      {
+        id: 'logs',
+        label: 'Logs',
+        icon: null,
+        path: '/observability/logs',
+      },
+    ]
   },
 ]
 
@@ -93,56 +65,12 @@ const platformEngineeringNavItems: NavItem[] = [
     label: 'Infrastructure',
     icon: <Server className="h-4 w-4" />,
     path: '/infrastructure',
-    children: [
-      {
-        id: 'clusters',
-        label: 'Clusters',
-        icon: <Network className="h-4 w-4" />,
-        path: '/infrastructure/clusters',
-      },
-      {
-        id: 'nodes',
-        label: 'Nodes',
-        icon: <HardDrive className="h-4 w-4" />,
-        path: '/infrastructure/nodes',
-      },
-      {
-        id: 'storage',
-        label: 'Storage',
-        icon: <Database className="h-4 w-4" />,
-        path: '/infrastructure/storage',
-      },
-    ],
   },
   {
-    id: 'platform-services',
-    label: 'Platform Services',
-    icon: <Layers className="h-4 w-4" />,
-    path: '/platform-services',
-  },
-  {
-    id: 'ci-cd',
-    label: 'CI/CD Pipelines',
-    icon: <Workflow className="h-4 w-4" />,
-    path: '/ci-cd',
-  },
-  {
-    id: 'observability',
-    label: 'Observability',
-    icon: <Monitor className="h-4 w-4" />,
-    path: '/observability',
-  },
-  {
-    id: 'security-compliance',
-    label: 'Security & Compliance',
+    id: 'security-posture',
+    label: 'Security Posture',
     icon: <Shield className="h-4 w-4" />,
-    path: '/security-compliance',
-  },
-  {
-    id: 'cost-management',
-    label: 'Cost Management',
-    icon: <BarChart3 className="h-4 w-4" />,
-    path: '/cost-management',
+    path: '/security-posture',
   },
   {
     id: 'team-management',
@@ -151,11 +79,18 @@ const platformEngineeringNavItems: NavItem[] = [
     path: '/team-management',
   },
   {
-    id: 'incidents',
-    label: 'Incidents',
-    icon: <AlertCircle className="h-4 w-4" />,
-    path: '/incidents',
-    badge: 3,
+    id: 'observability',
+    label: 'Observability',
+    icon: <Activity className="h-4 w-4" />,
+    path: '/observability',
+    children: [
+      {
+        id: 'logs',
+        label: 'Logs',
+        icon: null,
+        path: '/observability/logs',
+      },
+    ]
   },
 ]
 

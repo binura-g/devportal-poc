@@ -58,7 +58,7 @@ export const useGlobalStore = create<GlobalState>()(
   persist(
     (set, get) => ({
       // Initial state
-      perspective: 'development',
+      perspective: 'platform-engineering',
       currentProject: null,
       currentComponent: null,
       currentEnvironment: null,
@@ -111,7 +111,7 @@ export const useGlobalStore = create<GlobalState>()(
         return get().components.filter(c => c.projectId === projectId)
       },
       
-      getEnvironmentsForProject: (projectId) => {
+      getEnvironmentsForProject: (_projectId) => {
         // For now, all environments are available for all projects
         // Later this can be filtered based on project-specific environments
         return get().environments

@@ -55,5 +55,17 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 14px; /* Set base font size */
+  }
+  
+  /* Override any text-xs classes to ensure 13px minimum */
+  .text-xs {
+    font-size: 13px !important;
+    line-height: 16px !important;
+  }
+  
+  /* Ensure no text is smaller than 13px */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, select, textarea, label {
+    font-size: max(13px, 1em);
   }
 }

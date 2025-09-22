@@ -17,6 +17,11 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        'xs': ['13px', '16px'],    // Override xs to be 13px minimum
+        'sm': ['14px', '20px'],    // Keep sm as 14px
+        'base': ['16px', '24px'],  // Keep base as 16px
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
